@@ -1,0 +1,9 @@
+.DS_Store
+.idea
+*.log
+tmp/
+
+CLAUDE.md
+GIMINI.md
+AGENTS.md
+./.agent-shell

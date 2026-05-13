@@ -1,3 +1,34 @@
-#!/usr/bin/env ruby
+Vagrant.configure(2) do |config|
+  config.vm.box = REDACTED
+  config.vm.box_url = REDACTED
 
+  # Define ipetrovS machine
+  config.vm.define "ipetrovS" do |control|
+    control.vm.hostname = "ipetrovS"
+    control.vm.network REDACTED, ip: "192.168.56.110"
 
+    control.vm.provider REDACTED do |v|
+      v.customize ["modifyvm", :id, "--name", "wilS"]
+    end
+
+    config.vm.provision :shell, :inline => SHELL
+
+    control.vm.provision "shell", path: REDACTED
+  end
+
+  # Define ipetrovW machine
+  config.vm.define "ipetrovW" do |control|
+    control.vm.hostname = "ipetrovSW"
+    control.vm.network REDACTED, ip: "192.168.56.111"
+
+    control.vm.provider REDACTED do |v|
+      v.customize ["modifyvm", :id, "--name", "ipetrovW"]
+    end
+
+    config.vm.provision "shell", inline: <<-SHELL
+      # [..] Shell script content here
+    SHELL
+
+    control.vm.provision "shell", path: REDACTED
+  end
+end
