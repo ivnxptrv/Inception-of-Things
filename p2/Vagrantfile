@@ -1,3 +1,43 @@
-#!/usr/bin/env ruby
+K3S_TOKEN = "ipetrovS42iotjoinsecret"   # any random string; same on both VMs
 
+Vagrant.configure(2) do |config|
+    config.vm.box = "generic/debian12"
 
+    config.vm.synced_folder ".", "/vagrant", type: "rsync"
+
+    config.vm.provider :libvirt do |v|
+        v.default_prefix = "" # Prevents Vagrant from adding a folder prefix
+        v.random_hostname = false
+
+        v.memory = 2048
+        v.cpus = 2
+    end
+
+    # Define ipetrovS machine / Server
+    config.vm.define "ipetrovS" do |control|
+        control.vm.hostname = "ipetrovS"
+        control.vm.network :private_network, ip: "192.168.56.110", libvirt__dhcp_enabled: false
+        control.vm.provision "shell", inline: <<-SHELL
+            export DEBIAN_FRONTEND=noninteractive
+            apt-get update -qq
+            apt-get install -y -qq curl iproute2
+            curl -sfL https://get.k3s.io | \
+                INSTALL_K3S_VERSION=v1.30.5+k3s1 \
+                K3S_TOKEN="#{K3S_TOKEN}" \
+                INSTALL_K3S_EXEC="server \
+                    --node-ip=192.168.56.110 \
+                    --bind-address=192.168.56.110 \
+                    --advertise-address=192.168.56.110 \
+                    --flannel-iface=eth1" \
+                sh -
+
+            # Wait until the API is actually serving, so kubectl works post-up
+            for i in $(seq 1 60); do
+                kubectl get nodes >/dev/null 2>&1 && break
+                sleep 2
+            done
+
+        kubectl apply -f /vagrant/confs/deployment.yml
+        SHELL
+    end
+end
