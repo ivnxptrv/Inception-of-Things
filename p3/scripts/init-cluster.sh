@@ -18,4 +18,4 @@ rm kubectl
 curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 
 # init cluster in containers, create single Node with Control and Worker same time
-sudo k3d cluster create ipetrov -p "8080:80@loadbalancer" -p "8443:443@loadbalancer"
+sudo k3d cluster create ipetrov -p "8888:80@loadbalancer"
