@@ -85,7 +85,7 @@ spec:
     app: app1
   ports:
     - protocol: TCP
-      port: 8080
+      port: 80
       targetPort: 8080
 
 ---
@@ -98,20 +98,20 @@ spec:
     app: app2
   ports:
     - protocol: TCP
-      port: 8080
+      port: 80
       targetPort: 8080
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: svc-app2
+  name: svc-app3
 spec:
   selector:
-    app: app2
+    app: app3
   ports:
     - protocol: TCP
-      port: 8080
+      port: 80
       targetPort: 8080
 
 ---
@@ -130,7 +130,7 @@ spec:
               service:
                 name: svc-app1
                 port:
-                  number: 8080
+                  number: 80
     - host: app2.com
       http:
         paths:
@@ -140,7 +140,7 @@ spec:
               service:
                 name: svc-app2
                 port:
-                  number: 8080
+                  number: 80
     - host: app3.com
       http:
         paths:
@@ -150,14 +150,13 @@ spec:
               service:
                 name: svc-app3
                 port:
-                  number: 8080
-    - host:
-      http:
+                  number: 80
+    - http: # Notice: NO HOST KEY HERE
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: svc-app3
+                name: svc-app2
                 port:
-                  number: 8080
+                  number: 80
