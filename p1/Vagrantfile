@@ -4,7 +4,7 @@ Vagrant.configure(2) do |config|
     config.vm.box = "generic/debian12"
     
     config.vm.provider :libvirt do |v|
-        v.default_prefix = "" # Prevents Vagrant from adding a folder prefix
+        v.default_prefix = "" 
         v.random_hostname = false
 
         v.memory = 2048

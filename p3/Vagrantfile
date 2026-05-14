@@ -13,5 +13,12 @@ Vagrant.configure(2) do |config|
     config.vm.define "ipetrovS" do |control|
         control.vm.hostname = "ipetrovS"
         control.vm.network :private_network, ip: "192.168.56.110", libvirt__dhcp_enabled: false
+        control.vm.provision "shell", inline: <<-SHELL
+            export DEBIAN_FRONTEND=noninteractive
+            apt-get update -qq
+            cd /vagrant/scripts/
+            ./init-cluster.sh
+            ./init-argocd.sh
+        SHELL
     end
 end

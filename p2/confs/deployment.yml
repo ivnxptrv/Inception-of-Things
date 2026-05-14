@@ -151,7 +151,7 @@ spec:
                 name: svc-app3
                 port:
                   number: 80
-    - http: # Notice: NO HOST KEY HERE
+    - http: # to service assets .css and images
         paths:
           - path: /
             pathType: Prefix
