@@ -31,7 +31,6 @@
           libvirt
           qemu
           kubectl
-          kubernetes-helm
         ];
 
         shellHook = ''
