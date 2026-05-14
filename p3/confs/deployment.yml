@@ -7,8 +7,8 @@ spec:
   project: default
   source:
     repoURL: https://github.com/ivnxptrv/ipetrov.git
-    targetRevision: HEAD
-    path: manifests
+    targetRevision: main
+    path: .
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
@@ -23,16 +23,14 @@ kind: Ingress
 metadata:
   name: argocd-server-ingress
   namespace: argocd
-  annotations:
-    traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
   rules:
     - http:
-      paths:
-        - path: /argocd
-          pathType: Prefix
-          backend:
-            service:
-              name: argocd-server
-              port:
-                number: 80 # The Argo CD service listens on 443 internally
+        paths:
+          - path: /argocd
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 80
