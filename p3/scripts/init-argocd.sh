@@ -8,9 +8,9 @@ sudo kubectl create namespace dev
 sudo kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 # wait when argocd start to work
-sudo kubectl -n argocd wait --for=condition=Established --timeout=120s \
+sudo kubectl -n argocd wait --for=condition=Established --timeout=800s \
   crd/applications.argoproj.io crd/appprojects.argoproj.io
-sudo kubectl -n argocd rollout status deploy/argocd-server --timeout=180s
+sudo kubectl -n argocd rollout status deploy/argocd-server --timeout=800s
 
 # bind cluster to git repo
 sudo kubectl apply -f ../confs/deployment.yml
